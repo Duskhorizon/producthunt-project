@@ -2,6 +2,27 @@
 
 {% block content %}
 
-hello worlds!
+{% for product in products.all %}
+<div class="row pt-3" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+    <div class="col-2">
+        <img src="{{ product.image.url }}" class="img-fluid" />   
+    </div>
+    <div class="col-6">
+        <h1>{{ product.title }}</h1>
+        <p> {{ product.summary}}</p>
+    </div>
+    <div class="col-4">
+        <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button class ="btn btn-primary btn-lg btn-block"><span class="oi oi-thumb-up"></span> UPVOTE {{ product.votes_total}}</button></a>
+    </div>
+</div>
+
+<form id="upvote{{ product.id }}" method="POST" action="{% url 'upvote' product.id %}">
+        {% csrf_token %}
+        <input type="hidden">
+</form>  
+<br />
+<br />
+<br />
+{% endfor %}
 
 {% endblock %}
